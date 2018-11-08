@@ -1,21 +1,15 @@
-version: '3.5'
+version: '3.3'
 
 services:
 
-  first-game-server:
-    image: nginx:1.15.6-alpine
+  first-game-app:
+    command: npm start
+#    command: sh -c 'sleep 10000'
+    build:
+      context: .
     volumes:
-      - ./app/html:/usr/share/nginx/html:ro
+      - '.:/app'
     ports:
       - 80:80
-
-#  first-game-app:
-#    #    command: bash -c 'sleep 10000'
-#    build:
-#      context: .
-#    volumes:
-#      - './app:/app'
-#    ports:
-#      - 80:80
 #    environment:
 #      - NODE_ENV=production

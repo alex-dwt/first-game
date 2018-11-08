@@ -2,11 +2,10 @@
 FROM node:11.1.0-alpine
 
 # set working directory
-RUN mkdir /usr/src/my-app
-WORKDIR /usr/src/my-app
+WORKDIR /app/src
 
 # add `/usr/src/app/node_modules/.bin` to $PATH
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
+ENV PATH /app/src/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 ##COPY package.json /usr/src/app/package.json

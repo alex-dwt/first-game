@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "/app/html/",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "allowJs": true
+  },
+  "files": [
+    "./phaser.d.ts"
+  ]
+}
