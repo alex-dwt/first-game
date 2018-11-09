@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
 
-  first-game-app:
+  first-game-app-server:
     command: npm start
 #    command: sh -c 'sleep 10000'
     build:
@@ -11,5 +11,12 @@ services:
       - '.:/app'
     ports:
       - 80:80
-#    environment:
-#      - NODE_ENV=production
+
+  first-game-app-webpack:
+    command: npm run watch
+    build:
+      context: .
+    volumes:
+      - '.:/app'
+    environment:
+      - NODE_ENV=production
