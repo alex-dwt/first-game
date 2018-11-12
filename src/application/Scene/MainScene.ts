@@ -1,56 +1,25 @@
 /// <reference path="../../phaser.d.ts" />
 
+import {BootScene} from "./BootScene";
+
 export class MainScene extends Phaser.Scene {
 
     player: Phaser.Physics.Arcade.Sprite;
     cursors: Phaser.Input.Keyboard.CursorKeys;
 
     constructor() {
-        super('MainScene');
+        super({
+            key: 'MainScene',
+            active: false
+        });
     }
 
-
     preload() {
-
-
-        var progressBar = this.add.graphics();
-        var progressBox = this.add.graphics();
-        progressBox.fillStyle(0x222222, 0.8);
-        progressBox.fillRect(240, 270, 320, 50);
-
-        this.load.on('progress', function (value: number) {
-            console.log(value);
-
-            progressBar.clear();
-            progressBar.fillStyle(0xFFFFFF, 1);
-            progressBar.fillRect(250, 280, 300 * value, 30);
-
-        });
-
-        // this.load.on('fileprogress', function (file: Phaser.Loader.File) {
-        //     console.log(file.src);
-        //     console.log(file);
-        // });
-
-        // this.load.on('complete', function () {
-        //     console.log('complete');
-        // });
-
-
-        this.load.image('sky', 'assets/sky.png');
-        for (let i = 0; i < 200; i++) {
-            this.load.image('sky' + i, 'assets/sky.png');
-        }
-        this.load.image('ground', 'assets/platform.png');
-        this.load.image('star', 'assets/star.png');
-        this.load.image('bomb', 'assets/bomb.png');
-        this.load.spritesheet('dude',
-            'assets/dude.png',
-            { frameWidth: 32, frameHeight: 48 }
-        );
+        this.scene.remove('BootScene');
     }
 
     create() {
+
         this.add.image(400, 300, 'sky');
 
         let platforms = this.physics.add.staticGroup();
@@ -84,8 +53,6 @@ export class MainScene extends Phaser.Scene {
 
 
         this.cursors = this.input.keyboard.createCursorKeys();
-
-
 
 
         let stars = this.physics.add.group({

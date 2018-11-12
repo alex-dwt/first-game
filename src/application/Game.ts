@@ -1,6 +1,7 @@
 /// <reference path="../phaser.d.ts" />
 
 import { MainScene } from "./Scene/MainScene";
+import { BootScene } from "./Scene/BootScene";
 
 export class Game {
     game: Phaser.Game;
@@ -18,7 +19,7 @@ export class Game {
                         debug: false
                     }
                 },
-                scene: new MainScene(),
+                scene: [new BootScene(), new MainScene()],
             }
         );
     }
