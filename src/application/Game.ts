@@ -2,6 +2,7 @@
 
 import { MainScene } from "./Scene/MainScene";
 import { BootScene } from "./Scene/BootScene";
+import * as PARAMS from "./Params.js";
 
 export class Game {
     game: Phaser.Game;
@@ -10,8 +11,8 @@ export class Game {
         this.game = new Phaser.Game(
             {
                 type: Phaser.AUTO,
-                width: 800,
-                height: 600,
+                width: PARAMS.GAME_WIDTH,
+                height: PARAMS.GAME_HEIGHT,
                 physics: {
                     default: 'arcade',
                     arcade: {
