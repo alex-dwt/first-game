@@ -6,6 +6,8 @@ export class MainScene extends Phaser.Scene {
 
     player: Phaser.Physics.Arcade.Sprite;
     cursors: Phaser.Input.Keyboard.CursorKeys;
+    background1: Phaser.GameObjects.Image;
+    background2: Phaser.GameObjects.Image;
 
     constructor() {
         super({
@@ -19,8 +21,13 @@ export class MainScene extends Phaser.Scene {
     }
 
     create() {
+        this.background1 = this.physics.add.image(0, 0, 'sea').setOrigin(0, 0);
+        this.background2 = this.physics.add.image(this.background1.width, 0, 'sea').setOrigin(0, 0);
 
-        this.add.image(400, 300, 'sky');
+
+        this.background1.setVelocityX(-15);
+        this.background2.setVelocityX(-15);
+
 
         let platforms = this.physics.add.staticGroup();
         platforms.create(400, 568, 'ground').setScale(2).refreshBody();
@@ -72,6 +79,25 @@ export class MainScene extends Phaser.Scene {
     }
 
     update() {
+        // this.background1.x--;
+        // this.background2.x--;
+
+
+
+        if (this.background1.x + this.background1.width <= 0) {
+            this.background1.setX(this.background1.width)
+        }
+
+
+        if (this.background2.x + this.background1.width <= 0) {
+            this.background2.setX(this.background1.width)
+        }
+
+
+
+
+
+
         if (this.cursors.left.isDown)
         {
             this.player.setVelocityX(-560);

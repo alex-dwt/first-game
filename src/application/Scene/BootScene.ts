@@ -26,7 +26,7 @@ export class BootScene extends Phaser.Scene {
             this.scene.start('MainScene')
         });
 
-        this.load.image('sky', 'assets/sky.png');
+        this.load.image('sea', 'assets/sea.jpg');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('star', 'assets/star.png');
         this.load.image('bomb', 'assets/bomb.png');

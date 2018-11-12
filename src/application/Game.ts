@@ -15,7 +15,7 @@ export class Game {
                 physics: {
                     default: 'arcade',
                     arcade: {
-                        gravity: { y: 302 },
+                        gravity: { y: 0 },
                         debug: false
                     }
                 },
