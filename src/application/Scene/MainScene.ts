@@ -15,7 +15,7 @@ export class MainScene extends Phaser.Scene {
 
     background: Phaser.GameObjects.TileSprite;
 
-    bubbles: Phaser.Physics.Arcade.Sprite[] = [];
+    bubble: Phaser.Physics.Arcade.Sprite;
 
     constructor() {
         super({
@@ -82,7 +82,7 @@ export class MainScene extends Phaser.Scene {
 
         this.processPlayerMovement();
 
-        this.processBubbles();
+        this.processBubble();
 
         // if (this.cursors.up.isDown && this.player.body.touching.down)
         // {
@@ -90,25 +90,23 @@ export class MainScene extends Phaser.Scene {
         // }
     }
 
-    private processBubbles()
+    private playerTouchedBubble()
     {
-        let idsToRemove = [];
-        let i = 0;
-        for (const bubble of this.bubbles) {
-            if (bubble.x + bubble.body.width <= 0) {
-                idsToRemove.push(i);
-            }
-            i++;
-        }
-        for (const id of idsToRemove) {
-            this.bubbles[id].destroy();
-            this.bubbles.splice(id, 1);
-        }
+        this.destroyBubble();
+    }
 
-        if (!this.bubbles.length) {
+    private destroyBubble()
+    {
+        this.bubble.destroy();
+        this.bubble = null;
+    }
+
+    private processBubble()
+    {
+        if (!this.bubble) {
             const WIDTH = 170;
 
-            let bubble = this
+            this.bubble = this
                 .physics
                 .add
                 .sprite(
@@ -119,11 +117,13 @@ export class MainScene extends Phaser.Scene {
                 .setOrigin(0, 0)
                 .setScale(0.7, 0.7);
 
-            bubble.body.setVelocityX(this.BACKGROUND_SPEED * -1);
+            this.bubble.body.setVelocityX(this.BACKGROUND_SPEED * -1);
 
-            this.bubbles.push(bubble);
-
-            console.log(bubble)
+            this.physics.add.overlap(this.bubble, this.player, this.playerTouchedBubble, null, this);
+        } else {
+            if (this.bubble.x + this.bubble.body.width <= 0) {
+                this.destroyBubble();
+            }
         }
     }
 
