@@ -15,7 +15,7 @@ export class MainScene extends Phaser.Scene {
 
     background: Phaser.GameObjects.TileSprite;
 
-    bubbles: Phaser.GameObjects.Graphics[] = [];
+    bubbles: Phaser.Physics.Arcade.Sprite[] = [];
 
     constructor() {
         super({
@@ -82,83 +82,50 @@ export class MainScene extends Phaser.Scene {
 
         this.processPlayerMovement();
 
-        // this.processBubbles();
+        this.processBubbles();
 
         // if (this.cursors.up.isDown && this.player.body.touching.down)
         // {
         //     this.player.setVelocityY(-330);
         // }
     }
-    //
-    // private processBubbles()
-    // {
-    //     // let idsToRemove = [];
-    //     //
-    //     // let i = 0;
-    //     // for (const bubble of this.bubbles) {
-    //     //     console.log(bubble.body.width);
-    //     //
-    //     //     if (Math.abs(bubble.x) >= PARAMS.GAME_WIDTH + bubble.body.width) {
-    //     //         idsToRemove.push(i);
-    //     //     }
-    //     //     i++;
-    //     // }
-    //     //
-    //     // for (const id of idsToRemove) {
-    //     //     console.log(id)
-    //     //     this.bubbles[id].destroy();
-    //     //     this.bubbles.splice(id, 1);
-    //     // }
-    //
-    //     if (!this.bubbles.length) {
-    //         const MAX_RADIUS = 50;
-    //
-    //         let bubble = this.add.graphics({ fillStyle: { color: 0xff0000 } });
-    //
-    //         const radius = 50;//Phaser.Math.Between(30, MAX_RADIUS);
-    //         bubble.fillCircleShape(
-    //             new Phaser.Geom.Circle(
-    //                 PARAMS.GAME_WIDTH - 100 - radius,
-    //                 Phaser.Math.Between(radius * 2, PARAMS.GAME_WIDTH - radius * 2),
-    //                 radius
-    //             )
-    //         );
-    //
-    //         console.log(bubble);
-    //
-    //
-    //         this.physics.world.enable(bubble);
-    //
-    //         bubble.body.bounce.set(1)
-    //         bubble.body.setCircle(45)
-    //
-    //         // this.physics.world.add(bubble);
-    //         bubble.body.setVelocityX(this.BACKGROUND_SPEED * -1);
-    //         this.bubbles.push(bubble);
-    //
-    //         this.physics.add.collider(this.player, bubble,
-    //             function () {console.log(111)}, function () {console.log(2)});
-    //
-    //
-    //         this.physics.add.overlap(this.player, bubble,
-    //             function () {console.log(111)}, function () {console.log(2)});
-    //         bubble.depth = 0;
-    //         bubble.body.onCollide = true;
-    //         bubble.body.onOverlap = true;
-    //
-    //         // bubble.body.onWorldBounds = true;
-    //         // bubble.body.setCollideWorldBounds(true);
-    //         // this.physics.world.on('worldbounds', function(body){
-    //         //     console.log('hello from the edge of the world', body);
-    //         // },this);
-    //         this.physics.world.on('collide', function(body){
-    //             console.log('hello from the edge of the world', body);
-    //         },this);
-    //         this.physics.world.on('overlap', function(body){
-    //             console.log('hello from the edge of the world', body);
-    //         },this);
-    //     }
-    // }
+
+    private processBubbles()
+    {
+        let idsToRemove = [];
+        let i = 0;
+        for (const bubble of this.bubbles) {
+            if (bubble.x + bubble.body.width <= 0) {
+                idsToRemove.push(i);
+            }
+            i++;
+        }
+        for (const id of idsToRemove) {
+            this.bubbles[id].destroy();
+            this.bubbles.splice(id, 1);
+        }
+
+        if (!this.bubbles.length) {
+            const WIDTH = 170;
+
+            let bubble = this
+                .physics
+                .add
+                .sprite(
+                    PARAMS.GAME_WIDTH,
+                    Phaser.Math.Between(0, PARAMS.GAME_HEIGHT - WIDTH),
+                    'bubble'
+                )
+                .setOrigin(0, 0)
+                .setScale(0.7, 0.7);
+
+            bubble.body.setVelocityX(this.BACKGROUND_SPEED * -1);
+
+            this.bubbles.push(bubble);
+
+            console.log(bubble)
+        }
+    }
 
     private processBackground()
     {
