@@ -16,8 +16,7 @@ export class Game {
                 physics: {
                     default: 'arcade',
                     arcade: {
-                        gravity: { y: 0 },
-                        debug: false
+                        debug: true
                     }
                 },
                 scene: [new BootScene(), new MainScene()],

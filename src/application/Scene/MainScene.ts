@@ -5,18 +5,15 @@ import * as PARAMS from "../Params.js";
 
 export class MainScene extends Phaser.Scene {
 
-    readonly BACKGROUND_SPEED = 180;
+    readonly BACKGROUND_SPEED = 100;
     readonly BACKGROUND_WIDTH = 800;
 
-    readonly PLAYER_SPEED = this.BACKGROUND_SPEED * 2;
+    readonly PLAYER_SPEED = this.BACKGROUND_SPEED + 20;
 
     player: Phaser.Physics.Arcade.Sprite;
     cursors: Phaser.Input.Keyboard.CursorKeys;
 
-    background: [
-        Phaser.GameObjects.Image,
-        Phaser.GameObjects.Image
-    ] = [];
+    background: Phaser.GameObjects.TileSprite;
 
     bubbles: Phaser.GameObjects.Graphics[] = [];
 
@@ -32,10 +29,9 @@ export class MainScene extends Phaser.Scene {
     }
 
     create() {
-        this.background.push(this.physics.add.image(0, 0, 'sea').setOrigin(0, 0));
-        this.background.push(this.physics.add.image(this.background[0].width, 0, 'sea').setOrigin(0, 0));
-
-        this.background.map((v) => v.setVelocityX(this.BACKGROUND_SPEED * -1));
+        this.background = this.add.tileSprite(0,0, 1600, 600, 'sea').setOrigin(0, 0);
+        this.physics.add.existing(this.background);
+        this.background.body.setVelocityX(this.BACKGROUND_SPEED * -1);
 
         this.player = this.physics.add.sprite(50, PARAMS.GAME_HEIGHT / 2, 'dude');
         this.player.setCollideWorldBounds(true);
@@ -86,91 +82,88 @@ export class MainScene extends Phaser.Scene {
 
         this.processPlayerMovement();
 
-        this.processBubbles();
+        // this.processBubbles();
 
         // if (this.cursors.up.isDown && this.player.body.touching.down)
         // {
         //     this.player.setVelocityY(-330);
         // }
     }
-
-    private processBubbles()
-    {
-        // let idsToRemove = [];
-        //
-        // let i = 0;
-        // for (const bubble of this.bubbles) {
-        //     console.log(bubble.body.width);
-        //
-        //     if (Math.abs(bubble.x) >= PARAMS.GAME_WIDTH + bubble.body.width) {
-        //         idsToRemove.push(i);
-        //     }
-        //     i++;
-        // }
-        //
-        // for (const id of idsToRemove) {
-        //     console.log(id)
-        //     this.bubbles[id].destroy();
-        //     this.bubbles.splice(id, 1);
-        // }
-
-        if (!this.bubbles.length) {
-            const MAX_RADIUS = 50;
-
-            let bubble = this.add.graphics({ fillStyle: { color: 0xff0000 } });
-
-            const radius = 50;//Phaser.Math.Between(30, MAX_RADIUS);
-            bubble.fillCircleShape(
-                new Phaser.Geom.Circle(
-                    PARAMS.GAME_WIDTH - 100 - radius,
-                    Phaser.Math.Between(radius * 2, PARAMS.GAME_WIDTH - radius * 2),
-                    radius
-                )
-            );
-
-            console.log(bubble);
-
-
-            this.physics.world.enable(bubble);
-
-            bubble.body.bounce.set(1)
-            bubble.body.setCircle(45)
-
-            // this.physics.world.add(bubble);
-            bubble.body.setVelocityX(this.BACKGROUND_SPEED * -1);
-            this.bubbles.push(bubble);
-
-            this.physics.add.collider(this.player, bubble,
-                function () {console.log(111)}, function () {console.log(2)});
-
-
-            this.physics.add.overlap(this.player, bubble,
-                function () {console.log(111)}, function () {console.log(2)});
-            bubble.depth = 0;
-            bubble.body.onCollide = true;
-            bubble.body.onOverlap = true;
-
-            // bubble.body.onWorldBounds = true;
-            // bubble.body.setCollideWorldBounds(true);
-            // this.physics.world.on('worldbounds', function(body){
-            //     console.log('hello from the edge of the world', body);
-            // },this);
-            this.physics.world.on('collide', function(body){
-                console.log('hello from the edge of the world', body);
-            },this);
-            this.physics.world.on('overlap', function(body){
-                console.log('hello from the edge of the world', body);
-            },this);
-        }
-    }
+    //
+    // private processBubbles()
+    // {
+    //     // let idsToRemove = [];
+    //     //
+    //     // let i = 0;
+    //     // for (const bubble of this.bubbles) {
+    //     //     console.log(bubble.body.width);
+    //     //
+    //     //     if (Math.abs(bubble.x) >= PARAMS.GAME_WIDTH + bubble.body.width) {
+    //     //         idsToRemove.push(i);
+    //     //     }
+    //     //     i++;
+    //     // }
+    //     //
+    //     // for (const id of idsToRemove) {
+    //     //     console.log(id)
+    //     //     this.bubbles[id].destroy();
+    //     //     this.bubbles.splice(id, 1);
+    //     // }
+    //
+    //     if (!this.bubbles.length) {
+    //         const MAX_RADIUS = 50;
+    //
+    //         let bubble = this.add.graphics({ fillStyle: { color: 0xff0000 } });
+    //
+    //         const radius = 50;//Phaser.Math.Between(30, MAX_RADIUS);
+    //         bubble.fillCircleShape(
+    //             new Phaser.Geom.Circle(
+    //                 PARAMS.GAME_WIDTH - 100 - radius,
+    //                 Phaser.Math.Between(radius * 2, PARAMS.GAME_WIDTH - radius * 2),
+    //                 radius
+    //             )
+    //         );
+    //
+    //         console.log(bubble);
+    //
+    //
+    //         this.physics.world.enable(bubble);
+    //
+    //         bubble.body.bounce.set(1)
+    //         bubble.body.setCircle(45)
+    //
+    //         // this.physics.world.add(bubble);
+    //         bubble.body.setVelocityX(this.BACKGROUND_SPEED * -1);
+    //         this.bubbles.push(bubble);
+    //
+    //         this.physics.add.collider(this.player, bubble,
+    //             function () {console.log(111)}, function () {console.log(2)});
+    //
+    //
+    //         this.physics.add.overlap(this.player, bubble,
+    //             function () {console.log(111)}, function () {console.log(2)});
+    //         bubble.depth = 0;
+    //         bubble.body.onCollide = true;
+    //         bubble.body.onOverlap = true;
+    //
+    //         // bubble.body.onWorldBounds = true;
+    //         // bubble.body.setCollideWorldBounds(true);
+    //         // this.physics.world.on('worldbounds', function(body){
+    //         //     console.log('hello from the edge of the world', body);
+    //         // },this);
+    //         this.physics.world.on('collide', function(body){
+    //             console.log('hello from the edge of the world', body);
+    //         },this);
+    //         this.physics.world.on('overlap', function(body){
+    //             console.log('hello from the edge of the world', body);
+    //         },this);
+    //     }
+    // }
 
     private processBackground()
     {
-        for (const background of this.background) {
-            const diff = background.x + this.BACKGROUND_WIDTH;
-            if (diff <= 0) {
-                background.setX(this.BACKGROUND_WIDTH + diff);
-            }
+        if (Math.abs(this.background.x) >= PARAMS.GAME_WIDTH) {
+            this.background.setX(0)
         }
     }
 
@@ -200,6 +193,7 @@ export class MainScene extends Phaser.Scene {
             this.player.anims.play('left', true);
         } else {
             this.player.anims.play('turn');
+            this.player.setVelocityX(this.BACKGROUND_SPEED * -1);
         }
     }
     //
