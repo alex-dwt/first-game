@@ -18,7 +18,7 @@ export class MainScene extends Phaser.Scene {
 
     bubble: Phaser.Physics.Arcade.Sprite;
 
-    playerModel: Player = new Player();
+    playerModel: Player;
 
     constructor() {
         super({
@@ -32,6 +32,9 @@ export class MainScene extends Phaser.Scene {
     }
 
     create() {
+        this.playerModel = new Player(this);
+
+
         this.background = this.add.tileSprite(0,0, PARAMS.GAME_WIDTH * 2, PARAMS.GAME_HEIGHT, 'sea').setOrigin(0, 0);
         this.physics.add.existing(this.background);
         this.background.body.setVelocityX(this.BACKGROUND_SPEED * -1);

@@ -1,27 +1,28 @@
 export class PlayerShield {
     readonly INITIAL_HEALTH = 3;
 
-    /*private*/ health: number;
+    private _health: number = 0;
+    private _scene: Phaser.Scene;
 
-    constructor() {
-        this.health = 0;
+    constructor(scene: Phaser.Scene) {
+        this._scene = scene;
     }
 
     get isActive(): boolean {
-        return this.health > 0;
+        return this._health > 0;
     }
 
-    health1(): number {
-        return this.health;
+    get health(): number {
+        return this._health;
     }
 
     hit() {
         if (this.isActive) {
-            this.health--;
+            this._health--;
         }
     }
 
     recharge() {
-        this.health = this.INITIAL_HEALTH;
+        this._health = this.INITIAL_HEALTH;
     }
 }
