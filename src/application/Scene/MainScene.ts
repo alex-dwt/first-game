@@ -91,6 +91,25 @@ export class MainScene extends Phaser.Scene {
         this.textLife = this.add.text(65, 18, PARAMS.PLAYER_INITIAL_HEALTH, { fontSize: '32px', fill: '#FFF' });
         this.textShield = this.add.text(150, 18, '0', { fontSize: '32px', fill: '#FFF' });
 
+        this.events.on('gameover', () => {
+            this.anims.pauseAll();
+            this.physics.pause();
+            this.player.setTint(0xff0000);
+
+            let gameOverText = this.add.text(250, 100, 'Game Over', { fontSize: '50px', fill: 'red' });
+            gameOverText.depth = 5;
+
+            this.tweens.add({
+                targets: gameOverText,
+                x: 250,
+                y: 330,
+                ease: 'Expo.easeOut',
+                duration: 1000,
+                repeat: 0,           
+                yoyo: false
+            });
+        });
+
         this.add.image(35, 35, 'heart').setScale(0.4, 0.4);
         this.add.image(120, 35, 'shield').setScale(0.4, 0.4);
     }

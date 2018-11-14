@@ -36,6 +36,7 @@ export class Player {
 
         if (!this._health) {
             // game over
+            this._scene.events.emit('gameover');
         }
     }
 }
