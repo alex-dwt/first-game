@@ -34,21 +34,29 @@ export class MainScene extends Phaser.Scene {
 
         this.player = this.physics.add.sprite(50, PARAMS.GAME_HEIGHT / 2, 'dude');
         this.player.setCollideWorldBounds(true);
+        this.player.alpha = 0.9;
+        this.player.setScale(0.5, 0.5);
 
         this.anims.create({
             key: 'left',
-            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('dude', { start: 8, end: 15 }),
             frameRate: 10,
             repeat: -1
         });
         this.anims.create({
             key: 'turn',
-            frames: [ { key: 'dude', frame: 4 } ],
-            // frameRate: 20
+            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 7 }),
+            frameRate: 4,
+            repeat: -1
         });
+        // this.anims.create({
+        //     key: 'turn',
+        //     frames: [ { key: 'dude', frame: 4 } ],
+        //     // frameRate: 20
+        // });
         this.anims.create({
             key: 'right',
-            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 7 }),
             frameRate: 10,
             repeat: -1
         });
@@ -75,6 +83,7 @@ export class MainScene extends Phaser.Scene {
 
 
         this.cursors = this.input.keyboard.createCursorKeys();
+
 
         //
         // let stars = this.physics.add.group({
@@ -180,7 +189,7 @@ export class MainScene extends Phaser.Scene {
         } else if (this.player.body.velocity.x < 0) {
             this.player.anims.play('left', true);
         } else {
-            this.player.anims.play('turn');
+            this.player.anims.play('turn', true);
             this.player.setVelocityX(this.BACKGROUND_SPEED * -1);
         }
     }
