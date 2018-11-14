@@ -1,5 +1,7 @@
 /// <reference path="../../phaser.d.ts" />
 
+import * as PARAMS from "../Params.js";
+
 export class BootScene extends Phaser.Scene {
 
     constructor(key = 'BootScene') {
@@ -30,10 +32,13 @@ export class BootScene extends Phaser.Scene {
         this.load.image('ground', 'assets/platform.png');
         this.load.image('star', 'assets/star.png');
         this.load.image('bomb', 'assets/bomb.png');
-        this.load.image('bubble', 'assets/bubble.png');
         this.load.spritesheet('dude',
             'assets/dude.png',
             { frameWidth: 32, frameHeight: 48 }
+        );
+        this.load.spritesheet('bubble',
+            'assets/bubble.png',
+            { frameWidth: PARAMS.BUBBLE_SIZE, frameHeight: PARAMS.BUBBLE_SIZE }
         );
     }
 }

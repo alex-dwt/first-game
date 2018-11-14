@@ -1,6 +1,5 @@
 /// <reference path="../../phaser.d.ts" />
 
-import {BootScene} from "./BootScene";
 import * as PARAMS from "../Params.js";
 
 export class MainScene extends Phaser.Scene {
@@ -29,7 +28,7 @@ export class MainScene extends Phaser.Scene {
     }
 
     create() {
-        this.background = this.add.tileSprite(0,0, 1600, 600, 'sea').setOrigin(0, 0);
+        this.background = this.add.tileSprite(0,0, PARAMS.GAME_WIDTH * 2, PARAMS.GAME_HEIGHT, 'sea').setOrigin(0, 0);
         this.physics.add.existing(this.background);
         this.background.body.setVelocityX(this.BACKGROUND_SPEED * -1);
 
@@ -45,13 +44,31 @@ export class MainScene extends Phaser.Scene {
         this.anims.create({
             key: 'turn',
             frames: [ { key: 'dude', frame: 4 } ],
-            frameRate: 20
+            // frameRate: 20
         });
         this.anims.create({
             key: 'right',
             frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
             frameRate: 10,
             repeat: -1
+        });
+
+        // this.anims.create({
+        //     key: 'b',
+        //     frames: this.anims.generateFrameNumbers('bubble', { start: 0, end: 2 }),
+        //     frameRate: 2,
+        //     repeat: -1
+        // });
+
+
+        this.anims.create({
+            key: 'bubble-2',
+            frames: [ { key: 'bubble', frame: 1 } ],
+        });
+
+        this.anims.create({
+            key: 'bubble-1',
+            frames: [ { key: 'bubble', frame: 2 } ],
         });
 
         // this.physics.add.collider(this.player, platforms);
@@ -104,7 +121,7 @@ export class MainScene extends Phaser.Scene {
     private processBubble()
     {
         if (!this.bubble) {
-            const WIDTH = 170;
+            const WIDTH = PARAMS.BUBBLE_SIZE / 2;
 
             this.bubble = this
                 .physics
@@ -115,11 +132,15 @@ export class MainScene extends Phaser.Scene {
                     'bubble'
                 )
                 .setOrigin(0, 0)
-                .setScale(0.7, 0.7);
+                .setScale(0.5, 0.5);
 
             this.bubble.body.setVelocityX(this.BACKGROUND_SPEED * -1);
 
             this.physics.add.overlap(this.bubble, this.player, this.playerTouchedBubble, null, this);
+
+
+            // this.bubble.anims.play('bubble-1');
+
         } else {
             if (this.bubble.x + this.bubble.body.width <= 0) {
                 this.destroyBubble();
