@@ -3,11 +3,9 @@
 import * as PARAMS from "../Params.js";
 import {Player} from "../Player/Player";
 
-
 export class MainScene extends Phaser.Scene {
 
     readonly BACKGROUND_SPEED = 100;
-    readonly BACKGROUND_WIDTH = 800;
 
     readonly PLAYER_SPEED = this.BACKGROUND_SPEED + 20;
 
@@ -62,24 +60,12 @@ export class MainScene extends Phaser.Scene {
             frameRate: 4,
             repeat: -1
         });
-        // this.anims.create({
-        //     key: 'turn',
-        //     frames: [ { key: 'dude', frame: 4 } ],
-        //     // frameRate: 20
-        // });
         this.anims.create({
             key: 'right',
             frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 7 }),
             frameRate: 10,
             repeat: -1
         });
-
-        // this.anims.create({
-        //     key: 'b',
-        //     frames: this.anims.generateFrameNumbers('bubble', { start: 0, end: 2 }),
-        //     frameRate: 2,
-        //     repeat: -1
-        // });
 
 
         this.anims.create({
@@ -98,36 +84,12 @@ export class MainScene extends Phaser.Scene {
             frames: [ { key: 'bubble', frame: 2 } ],
         });
 
-        // this.physics.add.collider(this.player, platforms);
-
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
 
-        //
-        // let stars = this.physics.add.group({
-        //     key: 'star',
-        //     repeat: 11,
-        //     setXY: { x: 12, y: 0, stepX: 70 }
-        // });
-        //
-        // stars.children.iterate(function (child) {
-        //     child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-        // }, this);
-        //
-        //
-        // this.physics.add.collider(stars, platforms);
-        //
-        // this.physics.add.overlap(this.player, stars, this.collectStar, null, this);
-
-
-
-
-
         this.textLife = this.add.text(16, 16, '', { fontSize: '32px', fill: '#000' });
         this.textShield = this.add.text(50, 16, '', { fontSize: '32px', fill: '#000' });
-
-
     }
 
     update()
@@ -139,11 +101,6 @@ export class MainScene extends Phaser.Scene {
         this.processBubble();
 
         this.processEnemy();
-
-        // if (this.cursors.up.isDown && this.player.body.touching.down)
-        // {
-        //     this.player.setVelocityY(-330);
-        // }
     }
 
     private playerTouchedBubble()
@@ -155,17 +112,14 @@ export class MainScene extends Phaser.Scene {
 
     private playerTouchedEnemy()
     {
-        if (this.enemy.visible) {
-            this.playerModel.hitEnemy();
+        this.playerModel.hitEnemy();
 
-            this.textLife.setText(this.playerModel.health);
-            this.textShield.setText(this.playerModel.shieldHealth());
+        this.textLife.setText(this.playerModel.health);
+        this.textShield.setText(this.playerModel.shieldHealth());
 
-            this.enemy.destroy();
-            this.enemy = null;
 
-            console.log('playerTouchedEnemy')
-        }
+        this.destroyEnemy();
+
     }
 
     private destroyBubble()
@@ -174,20 +128,21 @@ export class MainScene extends Phaser.Scene {
         this.bubble = null;
     }
 
+    private destroyEnemy()
+    {
+        this.enemy.destroy();
+        this.enemy = null;
+    }
+
     private processEnemy()
     {
         if (!this.enemy) {
-
-
-
-
-
             this.enemy = this
                 .physics
                 .add
                 .sprite(
-                    500,
-                    500,
+                    PARAMS.GAME_WIDTH,
+                    Phaser.Math.Between(0, PARAMS.GAME_HEIGHT - PARAMS.ENEMY_HEIGHT),
                     'enemy'
                 )
                 .setOrigin(0, 0);
@@ -205,15 +160,27 @@ export class MainScene extends Phaser.Scene {
 
             this.enemy.alpha = 0.8;
 
+            this.enemy.body.setVelocityX(this.BACKGROUND_SPEED * -1);
+
 
             this.physics.add.overlap(this.enemy, this.player, this.playerTouchedEnemy, null, this);
 
 
-            this.enemy.visible = false;
-
-            setTimeout(() => {
-                this.enemy.visible = true;
-            }, 5000);
+            if (this.bubble) {
+                this.physics.add.overlap(
+                    this.enemy,
+                    this.bubble,
+                    function () {
+                        this.destroyBubble();
+                    },
+                    null,
+                    this
+                );
+            }
+        } else {
+            if (this.enemy.x + this.enemy.body.width <= 0) {
+                this.destroyEnemy();
+            }
         }
     }
 
@@ -238,8 +205,17 @@ export class MainScene extends Phaser.Scene {
             this.physics.add.overlap(this.bubble, this.player, this.playerTouchedBubble, null, this);
 
 
-            // this.bubble.anims.play('bubble-1');
-
+            if (this.enemy) {
+                this.physics.add.overlap(
+                    this.enemy,
+                    this.bubble,
+                    function () {
+                        this.destroyEnemy();
+                    },
+                    null,
+                    this
+                );
+            }
         } else {
             if (this.bubble.x + this.bubble.body.width <= 0) {
                 this.destroyBubble();
@@ -283,8 +259,4 @@ export class MainScene extends Phaser.Scene {
             this.player.setVelocityX(this.BACKGROUND_SPEED * -1);
         }
     }
-    //
-    // collectStar(player: Phaser.Physics.Arcade.Sprite, star: Phaser.Physics.Arcade.Sprite) {
-    //     star.disableBody(true, true);
-    // }
 }
