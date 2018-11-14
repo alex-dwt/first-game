@@ -1,16 +1,17 @@
 export class PlayerShield {
     readonly INITIAL_HEALTH = 3;
 
-    private health: number = 0;
+    /*private*/ health: number;
 
     constructor() {
+        this.health = 0;
     }
 
     get isActive(): boolean {
         return this.health > 0;
     }
 
-    get health(): number {
+    health1(): number {
         return this.health;
     }
 

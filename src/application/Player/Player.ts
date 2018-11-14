@@ -11,8 +11,8 @@ export class Player {
     }
 
     // 3 2 1 0
-    get shieldHealth(): number {
-        return this.shield.health;
+    shieldHealth(): number {
+        return this.shield.health1();
     }
 
     hitBubble() {

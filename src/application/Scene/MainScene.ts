@@ -1,6 +1,8 @@
 /// <reference path="../../phaser.d.ts" />
 
 import * as PARAMS from "../Params.js";
+import {Player} from "../Player/Player";
+
 
 export class MainScene extends Phaser.Scene {
 
@@ -15,6 +17,8 @@ export class MainScene extends Phaser.Scene {
     background: Phaser.GameObjects.TileSprite;
 
     bubble: Phaser.Physics.Arcade.Sprite;
+
+    playerModel: Player = new Player();
 
     constructor() {
         super({
@@ -118,6 +122,16 @@ export class MainScene extends Phaser.Scene {
 
     private playerTouchedBubble()
     {
+        this.playerModel.hitBubble();
+
+        let shieldHealth = this.playerModel.shieldHealth();
+
+        if (shieldHealth) {
+            this.player.setCircle(150, PARAMS.PLAYER_WIDTH * -1 / 10, PARAMS.PLAYER_HEIGHT * -1 / 2 )
+        } else {
+
+        }
+
         this.destroyBubble();
     }
 
