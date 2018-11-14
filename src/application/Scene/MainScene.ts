@@ -18,7 +18,12 @@ export class MainScene extends Phaser.Scene {
 
     bubble: Phaser.Physics.Arcade.Sprite;
 
+    enemy: Phaser.Physics.Arcade.Sprite;
+
     playerModel: Player;
+
+    textLife: Phaser.GameObjects.Text;
+    textShield: Phaser.GameObjects.Text;
 
     constructor() {
         super({
@@ -107,6 +112,15 @@ export class MainScene extends Phaser.Scene {
         // this.physics.add.collider(stars, platforms);
         //
         // this.physics.add.overlap(this.player, stars, this.collectStar, null, this);
+
+
+
+
+
+        this.textLife = this.add.text(16, 16, '', { fontSize: '32px', fill: '#000' });
+        this.textShield = this.add.text(50, 16, '', { fontSize: '32px', fill: '#000' });
+
+
     }
 
     update()
@@ -116,6 +130,8 @@ export class MainScene extends Phaser.Scene {
         this.processPlayerMovement();
 
         this.processBubble();
+
+        this.processEnemy();
 
         // if (this.cursors.up.isDown && this.player.body.touching.down)
         // {
@@ -138,10 +154,68 @@ export class MainScene extends Phaser.Scene {
         this.destroyBubble();
     }
 
+    private playerTouchedEnemy()
+    {
+        if (this.enemy.visible) {
+            this.playerModel.hitEnemy();
+
+            this.textLife.setText(this.playerModel.health);
+            this.textShield.setText(this.playerModel.shieldHealth());
+
+            this.enemy.destroy();
+            this.enemy = null;
+
+            console.log('playerTouchedEnemy')
+        }
+    }
+
     private destroyBubble()
     {
         this.bubble.destroy();
         this.bubble = null;
+    }
+
+    private processEnemy()
+    {
+        if (!this.enemy) {
+
+
+
+
+
+            this.enemy = this
+                .physics
+                .add
+                .sprite(
+                    500,
+                    500,
+                    'enemy'
+                )
+                .setOrigin(0, 0);
+
+
+            this.anims.create({
+                key: 'test',
+                frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 9 }),
+                frameRate: 5,
+                repeat: -1
+            });
+
+
+            this.enemy.anims.play('test', true);
+
+            this.enemy.alpha = 0.8;
+
+
+            this.physics.add.overlap(this.enemy, this.player, this.playerTouchedEnemy, null, this);
+
+
+            this.enemy.visible = false;
+
+            setTimeout(() => {
+                this.enemy.visible = true;
+            }, 5000);
+        }
     }
 
     private processBubble()

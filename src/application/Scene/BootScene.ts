@@ -44,5 +44,9 @@ export class BootScene extends Phaser.Scene {
             'assets/bubble.png',
             { frameWidth: PARAMS.BUBBLE_SIZE, frameHeight: PARAMS.BUBBLE_SIZE }
         );
+        this.load.spritesheet('enemy',
+            'assets/enemy.png',
+            { frameWidth: PARAMS.ENEMY_WIDTH, frameHeight: PARAMS.ENEMY_HEIGHT, spacing: 2 }
+        );
     }
 }

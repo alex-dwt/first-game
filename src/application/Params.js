@@ -5,3 +5,6 @@ export const BUBBLE_SIZE = 300;
 
 export const PLAYER_WIDTH = 252;
 export const PLAYER_HEIGHT = 171;
+
+export const ENEMY_WIDTH = 180;
+export const ENEMY_HEIGHT = 125;

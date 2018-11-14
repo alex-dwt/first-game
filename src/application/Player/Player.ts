@@ -12,6 +12,10 @@ export class Player {
         this._shield = new PlayerShield(scene);
     }
 
+    get health() {
+        return this._health;
+    }
+
     // 3 2 1 0
     shieldHealth(): number {
         return this._shield.health;
