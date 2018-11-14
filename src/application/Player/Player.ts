@@ -7,9 +7,12 @@ export class Player {
     private _shield: PlayerShield;
     private _scene: Phaser.Scene;
 
-    constructor(scene: Phaser.Scene) {
+    playerSprite: Phaser.Physics.Arcade.Sprite;
+
+    constructor(scene: Phaser.Scene, playerSprite: Phaser.Physics.Arcade.Sprite) {
+        this.playerSprite = playerSprite;
         this._scene = scene;
-        this._shield = new PlayerShield(scene);
+        this._shield = new PlayerShield(scene, this);
     }
 
     get health() {

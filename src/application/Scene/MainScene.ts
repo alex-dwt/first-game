@@ -37,7 +37,6 @@ export class MainScene extends Phaser.Scene {
     }
 
     create() {
-        this.playerModel = new Player(this);
 
 
         this.background = this.add.tileSprite(0,0, PARAMS.GAME_WIDTH * 2, PARAMS.GAME_HEIGHT, 'sea').setOrigin(0, 0);
@@ -48,6 +47,8 @@ export class MainScene extends Phaser.Scene {
         this.player.setCollideWorldBounds(true);
         this.player.alpha = 0.9;
         this.player.setScale(0.5, 0.5);
+
+        this.playerModel = new Player(this, this.player);
 
         this.anims.create({
             key: 'left',
@@ -79,6 +80,12 @@ export class MainScene extends Phaser.Scene {
         //     frameRate: 2,
         //     repeat: -1
         // });
+
+
+        this.anims.create({
+            key: 'bubble-3',
+            frames: [ { key: 'bubble', frame: 0 } ],
+        });
 
 
         this.anims.create({
@@ -142,14 +149,6 @@ export class MainScene extends Phaser.Scene {
     private playerTouchedBubble()
     {
         this.playerModel.hitBubble();
-
-        let shieldHealth = this.playerModel.shieldHealth();
-
-        if (shieldHealth) {
-            this.player.setCircle(150, PARAMS.PLAYER_WIDTH * -1 / 10, PARAMS.PLAYER_HEIGHT * -1 / 2 )
-        } else {
-
-        }
 
         this.destroyBubble();
     }
