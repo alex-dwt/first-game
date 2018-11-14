@@ -88,8 +88,11 @@ export class MainScene extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
 
 
-        this.textLife = this.add.text(16, 16, '', { fontSize: '32px', fill: '#000' });
-        this.textShield = this.add.text(50, 16, '', { fontSize: '32px', fill: '#000' });
+        this.textLife = this.add.text(65, 18, PARAMS.PLAYER_INITIAL_HEALTH, { fontSize: '32px', fill: '#FFF' });
+        this.textShield = this.add.text(150, 18, '0', { fontSize: '32px', fill: '#FFF' });
+
+        this.add.image(35, 35, 'heart').setScale(0.4, 0.4);
+        this.add.image(120, 35, 'shield').setScale(0.4, 0.4);
     }
 
     update()
@@ -106,6 +109,9 @@ export class MainScene extends Phaser.Scene {
     private playerTouchedBubble()
     {
         this.playerModel.hitBubble();
+
+        this.textLife.setText(this.playerModel.health);
+        this.textShield.setText(this.playerModel.shieldHealth());
 
         this.destroyBubble();
     }

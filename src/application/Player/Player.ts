@@ -1,9 +1,8 @@
 import {PlayerShield} from "./PlayerShield";
+import * as PARAMS from "../Params.js";
 
 export class Player {
-    readonly INITIAL_HEALTH = 5;
-
-    private _health: number = this.INITIAL_HEALTH;
+    private _health: number = PARAMS.PLAYER_INITIAL_HEALTH;
     private _shield: PlayerShield;
     private _scene: Phaser.Scene;
 
