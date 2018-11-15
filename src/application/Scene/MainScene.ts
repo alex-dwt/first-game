@@ -11,15 +11,10 @@ export class MainScene extends Phaser.Scene {
 
     player: Phaser.Physics.Arcade.Sprite;
     cursors: Phaser.Input.Keyboard.CursorKeys;
-
     background: Phaser.GameObjects.TileSprite;
-
     bubble: Phaser.Physics.Arcade.Sprite;
-
     enemy: Phaser.Physics.Arcade.Sprite;
-
     playerModel: Player;
-
     textLife: Phaser.GameObjects.Text;
     textShield: Phaser.GameObjects.Text;
 
@@ -30,12 +25,20 @@ export class MainScene extends Phaser.Scene {
         });
     }
 
-    preload() {
+    init() {
         this.scene.remove('BootScene');
+
+        this.player = null;
+        this.cursors = null;
+        this.background = null;
+        this.bubble = null;
+        this.enemy = null;
+        this.playerModel = null;
+        this.textLife = null;
+        this.textShield = null;
     }
 
     create() {
-
 
         this.background = this.add.tileSprite(0,0, PARAMS.GAME_WIDTH * 2, PARAMS.GAME_HEIGHT, 'sea').setOrigin(0, 0);
         this.physics.add.existing(this.background);
@@ -96,18 +99,46 @@ export class MainScene extends Phaser.Scene {
             this.physics.pause();
             this.player.setTint(0xff0000);
 
-            let gameOverText = this.add.text(250, 100, 'Game Over', { fontSize: '50px', fill: 'red' });
-            gameOverText.depth = 5;
+            this.cameras.main.shake(250, 0.01, true, (camera, progress) => {
+                if (progress === 1) {
+                    let gameOverText = this.add.text(250, 100, 'Game Over', { fontSize: '50px', fill: 'red' });
+                    gameOverText.depth = 5;
 
-            this.tweens.add({
-                targets: gameOverText,
-                x: 250,
-                y: 330,
-                ease: 'Expo.easeOut',
-                duration: 1000,
-                repeat: 0,           
-                yoyo: false
-            });
+                    this.tweens.add({
+                        targets: gameOverText,
+                        x: 250,
+                        y: 330,
+                        ease: 'Expo.easeOut',
+                        duration: 1000,
+                        repeat: 0,
+                        yoyo: false
+                    });
+
+
+
+                    let restartText = this.add.text(250, 380, 'restart', { fontSize: '50px', fill: 'white' });
+                    restartText.depth = 5;
+                    restartText.alpha = 0;
+
+                    this.tweens.add({
+                        targets: restartText,
+                        alpha: 1,
+                        ease: 'Phaser.Easing.Linear.None',
+                        duration: 1000,
+                        repeat: 0,
+                        yoyo: false,
+                        onComplete: (tween, elements) => {
+                            elements[0].setInteractive();
+                        },
+                    });
+
+
+                    restartText.on('pointerdown', (pointer) => {
+                        this.scene.restart();
+                    })
+                }
+            }, this);
+
         });
 
         this.add.image(35, 35, 'heart').setScale(0.4, 0.4);
