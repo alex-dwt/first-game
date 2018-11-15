@@ -18,6 +18,8 @@ export class MainScene extends Phaser.Scene {
     textLife: Phaser.GameObjects.Text;
     textShield: Phaser.GameObjects.Text;
 
+    isGameOver: boolean;
+
     constructor() {
         super({
             key: 'MainScene',
@@ -36,6 +38,7 @@ export class MainScene extends Phaser.Scene {
         this.playerModel = null;
         this.textLife = null;
         this.textShield = null;
+        this.isGameOver = false;
     }
 
     create() {
@@ -95,6 +98,8 @@ export class MainScene extends Phaser.Scene {
         this.textShield = this.add.text(150, 18, '0', { fontSize: '32px', fill: '#FFF' });
 
         this.events.on('gameover', () => {
+            this.isGameOver = true;
+
             this.anims.pauseAll();
             this.physics.pause();
             this.player.setTint(0xff0000);
@@ -135,6 +140,7 @@ export class MainScene extends Phaser.Scene {
 
                     restartText.on('pointerdown', (pointer) => {
                         this.scene.restart();
+                        this.anims.resumeAll();
                     })
                 }
             }, this);
@@ -288,6 +294,10 @@ export class MainScene extends Phaser.Scene {
 
     private processPlayerMovement()
     {
+        if (this.isGameOver) {
+            return;
+        }
+
         this.player.setVelocity(0, 0);
 
         if (this.cursors.up.isDown) {
