@@ -10,7 +10,6 @@ export class MainScene extends Phaser.Scene {
     readonly PLAYER_SPEED = this.BACKGROUND_SPEED + 20;
 
     player: Phaser.Physics.Arcade.Sprite;
-    cursors: Phaser.Input.Keyboard.CursorKeys;
     background: Phaser.GameObjects.TileSprite;
     bubble: Phaser.Physics.Arcade.Sprite;
     enemy: Phaser.Physics.Arcade.Sprite;
@@ -31,7 +30,6 @@ export class MainScene extends Phaser.Scene {
         this.scene.remove('BootScene');
 
         this.player = null;
-        this.cursors = null;
         this.background = null;
         this.bubble = null;
         this.enemy = null;
@@ -89,9 +87,6 @@ export class MainScene extends Phaser.Scene {
             key: 'bubble-1',
             frames: [ { key: 'bubble', frame: 2 } ],
         });
-
-
-        this.cursors = this.input.keyboard.createCursorKeys();
 
 
         this.textLife = this.add.text(65, 18, PARAMS.PLAYER_INITIAL_HEALTH, { fontSize: '32px', fill: '#FFF' });
@@ -298,22 +293,12 @@ export class MainScene extends Phaser.Scene {
             return;
         }
 
-        this.player.setVelocity(0, 0);
-
-        if (this.cursors.up.isDown) {
-            this.player.setVelocityY(this.PLAYER_SPEED * -1);
-        }
-
-        if (this.cursors.down.isDown) {
-            this.player.setVelocityY(this.PLAYER_SPEED);
-        }
-
-        if (this.cursors.left.isDown) {
-            this.player.setVelocityX(this.PLAYER_SPEED * -1);
-        }
-
-        if (this.cursors.right.isDown) {
-            this.player.setVelocityX(this.PLAYER_SPEED);
+        if (this.input.mousePointer.isDown
+            && !Phaser.Geom.Rectangle.ContainsPoint(this.player.getBounds(), {x: this.input.x, y: this.input.y})
+        ) {
+            this.physics.moveTo(this.player, this.input.x, this.input.y, this.PLAYER_SPEED);
+        } else {
+            this.player.setVelocity(0, 0);
         }
 
         if (this.player.body.velocity.x > 0) {
