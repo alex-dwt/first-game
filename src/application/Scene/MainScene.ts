@@ -99,7 +99,7 @@ export class MainScene extends Phaser.Scene {
             this.physics.pause();
             this.player.setTint(0xff0000);
 
-            this.cameras.main.shake(250, 0.01, true, (camera, progress) => {
+            this.cameras.main.shake(250, 0.05, true, (camera, progress) => {
                 if (progress === 1) {
                     let gameOverText = this.add.text(250, 100, 'Game Over', { fontSize: '50px', fill: 'red' });
                     gameOverText.depth = 5;
