@@ -20,3 +20,11 @@ services:
       - '.:/app'
     environment:
       - NODE_ENV=production
+
+  cordova:
+    command: sleep 100000000
+    build:
+      context: .
+      dockerfile: Dockerfile-cordova
+    volumes:
+      - '.:/app'

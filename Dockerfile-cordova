@@ -1,0 +1,34 @@
+FROM ubuntu
+MAINTAINER Alexander Lukashevich <aleksandr.dwt@gmail.com>
+
+RUN apt-get update && apt-get install -y wget unzip npm openjdk-8-jdk
+
+RUN cd /tmp \
+    && wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip \
+    && mkdir -p /usr/local/android/platform-tools \
+    && unzip sdk-tools-linux-4333796.zip -d /usr/local/android \
+    && rm -f sdk-tools-linux-4333796.zip
+
+RUN yes | /usr/local/android/tools/bin/sdkmanager --licenses
+
+RUN npm install -g cordova
+
+RUN cd / \
+    && wget https://services.gradle.org/distributions/gradle-4.10.2-bin.zip \
+    && unzip gradle-4.10.2-bin.zip \
+    && rm -f gradle-4.10.2-bin.zip
+
+ENV ANDROID_HOME /usr/local/android
+ENV PATH $PATH:/app/node_modules/.bin:/usr/local/android/platform-tools:/gradle-4.10.2/bin
+
+RUN /usr/local/android/tools/bin/sdkmanager update \
+    ; /usr/local/android/tools/bin/sdkmanager platform-tools \
+    ; /usr/local/android/tools/bin/sdkmanager "build-tools;26.0.3"
+
+
+#cordova --no-telemetry build
+#cordova create hello com.example.hello HelloWorld
+#cd hello
+#cordova platform add android
+#cordova --no-telemetry clean
+

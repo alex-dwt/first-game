@@ -1,3 +1,7 @@
 /src/node_modules
 /.idea
 /html/bundle.js
+
+/cordova/app-debug.apk
+/cordova/node_modules
+/cordova/platforms
