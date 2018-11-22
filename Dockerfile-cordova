@@ -32,3 +32,6 @@ RUN /usr/local/android/tools/bin/sdkmanager update \
 #cordova platform add android
 #cordova --no-telemetry clean
 
+#cp /app/cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk /app
+
+#https://dl.google.com/android/repository/platform-tools-latest-linux.zip
