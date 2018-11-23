@@ -293,10 +293,12 @@ export class MainScene extends Phaser.Scene {
             return;
         }
 
-        if (this.input.mousePointer.isDown
-            && !Phaser.Geom.Rectangle.ContainsPoint(this.player.getBounds(), {x: this.input.x, y: this.input.y})
+        let pointer = this.input.activePointer;
+
+        if (pointer.isDown
+            && !Phaser.Geom.Rectangle.ContainsPoint(this.player.getBounds(), {x: pointer.x, y: pointer.y})
         ) {
-            this.physics.moveTo(this.player, this.input.x, this.input.y, this.PLAYER_SPEED);
+            this.physics.moveTo(this.player, pointer.x, pointer.y, this.PLAYER_SPEED);
         } else {
             this.player.setVelocity(0, 0);
         }
