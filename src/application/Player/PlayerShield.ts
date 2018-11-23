@@ -1,5 +1,6 @@
 import * as PARAMS from "../Params.js";
 import {Player} from "./Player";
+import {Game} from "../Game";
 
 export class PlayerShield {
     readonly INITIAL_HEALTH = 3;
@@ -17,8 +18,8 @@ export class PlayerShield {
             ._scene
             .add
             .sprite(
-                PARAMS.GAME_WIDTH / 2,
-                PARAMS.GAME_HEIGHT / 2,
+                Game.width() / 2,
+                Game.height() / 2,
                 'bubble'
             )
             .setScale(0.5, 0.5);
@@ -64,9 +65,9 @@ export class PlayerShield {
         this._sprite.visible = this.isActive;
 
         if (this.isActive) {
-            this._player.playerSprite.setCircle(150, PARAMS.PLAYER_WIDTH * -1 / 10, PARAMS.PLAYER_HEIGHT * -1 / 2 )
+            this._player.playerSprite.setCircle(60, PARAMS.PLAYER_WIDTH * -1 / 8, PARAMS.PLAYER_HEIGHT * -1 / 2 )
         } else {
-            this._player.playerSprite.setSize(230, 150);
+            this._player.playerSprite.setSize(115, 75);
 
         }
     }

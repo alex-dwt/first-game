@@ -2,6 +2,7 @@
 
 import * as PARAMS from "../Params.js";
 import {Player} from "../Player/Player";
+import {Game} from "../Game";
 
 export class MainScene extends Phaser.Scene {
 
@@ -41,14 +42,13 @@ export class MainScene extends Phaser.Scene {
 
     create() {
 
-        this.background = this.add.tileSprite(0,0, PARAMS.GAME_WIDTH * 2, PARAMS.GAME_HEIGHT, 'sea').setOrigin(0, 0);
+        this.background = this.add.tileSprite(0,0, Game.width() * 2, Game.height(), 'sea').setOrigin(0, 0);
         this.physics.add.existing(this.background);
         this.background.body.setVelocityX(this.BACKGROUND_SPEED * -1);
 
-        this.player = this.physics.add.sprite(50, PARAMS.GAME_HEIGHT / 2, 'dude');
+        this.player = this.physics.add.sprite(50, Game.height() / 2, 'dude');
         this.player.setCollideWorldBounds(true);
         this.player.alpha = 0.9;
-        this.player.setScale(0.5, 0.5);
 
         this.playerModel = new Player(this, this.player);
 
@@ -101,13 +101,13 @@ export class MainScene extends Phaser.Scene {
 
             this.cameras.main.shake(250, 0.05, true, (camera, progress) => {
                 if (progress === 1) {
-                    let gameOverText = this.add.text(250, 100, 'Game Over', { fontSize: '50px', fill: 'red' });
+                    let gameOverText = this.add.text(Game.width() / 2, 0, 'Game Over', { fontSize: '50px', fill: 'red' });
                     gameOverText.depth = 5;
 
                     this.tweens.add({
                         targets: gameOverText,
-                        x: 250,
-                        y: 330,
+                        x: Game.width() / 2,
+                        y: Game.height() / 2,
                         ease: 'Expo.easeOut',
                         duration: 1000,
                         repeat: 0,
@@ -116,7 +116,7 @@ export class MainScene extends Phaser.Scene {
 
 
 
-                    let restartText = this.add.text(250, 380, 'restart', { fontSize: '50px', fill: 'white' });
+                    let restartText = this.add.text(Game.width() / 2, Game.height() / 2 + 50, 'restart', { fontSize: '50px', fill: 'white' });
                     restartText.depth = 5;
                     restartText.alpha = 0;
 
@@ -198,8 +198,8 @@ export class MainScene extends Phaser.Scene {
                 .physics
                 .add
                 .sprite(
-                    PARAMS.GAME_WIDTH,
-                    Phaser.Math.Between(0, PARAMS.GAME_HEIGHT - PARAMS.ENEMY_HEIGHT),
+                    Game.width(),
+                    Phaser.Math.Between(0, Game.height() - PARAMS.ENEMY_HEIGHT),
                     'enemy'
                 )
                 .setOrigin(0, 0);
@@ -250,8 +250,8 @@ export class MainScene extends Phaser.Scene {
                 .physics
                 .add
                 .sprite(
-                    PARAMS.GAME_WIDTH,
-                    Phaser.Math.Between(0, PARAMS.GAME_HEIGHT - WIDTH),
+                    Game.width(),
+                    Phaser.Math.Between(0, Game.height() - WIDTH),
                     'bubble'
                 )
                 .setOrigin(0, 0)
@@ -282,7 +282,7 @@ export class MainScene extends Phaser.Scene {
 
     private processBackground()
     {
-        if (Math.abs(this.background.x) >= PARAMS.GAME_WIDTH) {
+        if (Math.abs(this.background.x) >= Game.width()) {
             this.background.setX(0)
         }
     }

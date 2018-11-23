@@ -38,7 +38,7 @@ export class BootScene extends Phaser.Scene {
             {
                 frameWidth: PARAMS.PLAYER_WIDTH,
                 frameHeight: PARAMS.PLAYER_HEIGHT,
-                spacing: 7,
+                spacing: 1,
             }
         );
         this.load.spritesheet('bubble',
